@@ -48,6 +48,7 @@ public partial class MainWindow : Window
     private string? _invite;
     private string _role = "";
     private int _people;
+    private bool _hasAcrylic;
     private bool _ready;
     private bool _refreshingAdapters;
     private bool _sending;
@@ -86,9 +87,8 @@ public partial class MainWindow : Window
             return;
         if (_source?.CompositionTarget is { } target && Background is SolidColorBrush surface)
         {
-            if (DesktopWindow.TryApplyAcrylic(this, _source))
-                Background = (Brush)FindResource("AcrylicSurface");
-            else
+            _hasAcrylic = DesktopWindow.TryApplyAcrylic(this, _source);
+            if (!_hasAcrylic)
                 target.BackgroundColor = surface.Color;
         }
         LayoutPicker.SelectedIndex = (int)_preferences.Layout;
@@ -349,7 +349,10 @@ public partial class MainWindow : Window
         BackButton.Visibility = VisibleIf(page is Page.Join or Page.Create or Page.Preferences);
         HeaderPreferences.Visibility = VisibleIf(page != Page.Preferences);
         HeaderHide.Visibility = VisibleIf(page != Page.Preferences);
-        HeaderTitle.FontSize = page == Page.Preferences ? 17 : 19;
+        if (_hasAcrylic)
+            Background = (Brush)FindResource(page == Page.Preferences ? "SettingsAcrylicSurface" : "AcrylicSurface");
+        HeaderTitle.FontSize = page == Page.Preferences ? 15.5 : 17;
+        HeaderTitle.Foreground = (Brush)FindResource(page == Page.Preferences ? "PanelTitleInk" : "BrandInk");
         HeaderTitle.Text = page switch
         {
             Page.Create => "创建房间",

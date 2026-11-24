@@ -67,6 +67,11 @@ internal static class DesktopWindow
         var roundCorner = 2;
         DwmSetWindowAttribute(source.Handle, cornerAttribute, ref roundCorner, sizeof(int));
 
+        // The application already draws its own rim over the system backdrop.
+        const int borderAttribute = 34;
+        var noBorder = unchecked((int)0xFFFFFFFE);
+        DwmSetWindowAttribute(source.Handle, borderAttribute, ref noBorder, sizeof(int));
+
         if (!AcrylicAvailable() || WindowChrome.GetWindowChrome(window) is not { } chrome
             || source.CompositionTarget is not { } target)
             return false;

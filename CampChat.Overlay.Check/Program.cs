@@ -218,6 +218,9 @@ internal static class Program
         Require(create.ActualWidth < stage.ActualWidth / 2 && create.ActualWidth == join.ActualWidth
                 && create.FontSize == join.FontSize && create.FontWeight == join.FontWeight,
             "Home actions are content-sized and use equal typography.");
+        Require(create.Template.FindName("Frame", create) is Border { CornerRadius.TopLeft: 12.5 }
+            && join.Template.FindName("Frame", join) is Border { CornerRadius.TopLeft: 12.5 },
+            "Both home actions use the larger reference radius.");
         var standardWidth = window.Width;
         window.Width = window.MinWidth;
         window.UpdateLayout();
@@ -314,6 +317,8 @@ internal static class Program
             "Settings fit without scrolling at the default window size.");
         var fillScreen = (Button)window.FindName("BorderlessButton");
         var buttonText = (ContentPresenter)fillScreen.Template.FindName("ButtonContent", fillScreen);
+        Require(fillScreen.Template.FindName("Frame", fillScreen) is Border { CornerRadius.TopLeft: 6.5 },
+            "The compact display action uses its own shallower corner radius.");
         var labelCenter = buttonText.TranslatePoint(new Point(buttonText.ActualWidth / 2, 0), fillScreen);
         Require(Math.Abs(labelCenter.X - fillScreen.ActualWidth / 2) <= 0.5,
             "The fill-screen label is centered within the button.");

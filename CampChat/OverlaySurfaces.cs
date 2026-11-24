@@ -227,7 +227,7 @@ internal sealed class ComposerWindow : Window
     {
         Background = Brushes.Transparent, BorderThickness = new Thickness(0), Padding = new Thickness(0, 3, 0, 3),
         VerticalContentAlignment = VerticalAlignment.Center, MaxLength = 400, FontSize = InputTextSize,
-        Foreground = OverlayStyle.FindBrush("Paper"), CaretBrush = OverlayStyle.FindBrush("Amber"),
+        Foreground = OverlayStyle.FindBrush("InputInk"), CaretBrush = OverlayStyle.FindBrush("Amber"),
         FocusVisualStyle = null,
     };
     private readonly Border _frame;
@@ -305,7 +305,7 @@ internal sealed class ComposerWindow : Window
         content.Children.Add(layout);
         _frame = new Border
         {
-            CornerRadius = new CornerRadius(12), BorderThickness = new Thickness(1),
+            CornerRadius = new CornerRadius(14), BorderThickness = new Thickness(1),
             BorderBrush = OverlayStyle.FindBrush("GlassRim"),
             Background = OverlayStyle.FindBrush("ShellSurface"), Child = content,
         };

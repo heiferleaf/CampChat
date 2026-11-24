@@ -2,29 +2,38 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="OverlayIcons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="Paper" Color="#FFF3E4"/>
+            <SolidColorBrush x:Key="Paper" Color="#FCF8EF"/>
+            <SolidColorBrush x:Key="BrandInk" Color="#F6E7CC"/>
+            <SolidColorBrush x:Key="PanelTitleInk" Color="#F6EFDA"/>
+            <SolidColorBrush x:Key="HomeActionInk" Color="#FBF6E8"/>
+            <SolidColorBrush x:Key="HomeIconInk" Color="#FBE1C1"/>
+            <SolidColorBrush x:Key="InputInk" Color="#FDFBF7"/>
+            <SolidColorBrush x:Key="SettingsFieldSurface" Color="#BA4D4034"/>
+            <SolidColorBrush x:Key="KeycapSurface" Color="#BA514539"/>
+            <SolidColorBrush x:Key="SettingsFieldLine" Color="#AF80705F"/>
             <SolidColorBrush x:Key="Muted" Color="#DECEBD"/>
             <SolidColorBrush x:Key="Line" Color="#836F5F"/>
             <SolidColorBrush x:Key="Amber" Color="#ECB780"/>
             <SolidColorBrush x:Key="SoftAccent" Color="#DDC0A1"/>
             <SolidColorBrush x:Key="GlassIcon" Color="#F3DDC3"/>
-            <SolidColorBrush x:Key="GroupLine" Color="#A48C7664"/>
-            <SolidColorBrush x:Key="GroupSurface" Color="#3C2C2119"/>
-            <SolidColorBrush x:Key="CopperInk" Color="#FFD39D"/>
-            <SolidColorBrush x:Key="WindowModeSurface" Color="#D0583D29"/>
+            <SolidColorBrush x:Key="GroupLine" Color="#A4867464"/>
+            <SolidColorBrush x:Key="GroupSurface" Color="#42302B21"/>
+            <SolidColorBrush x:Key="CopperInk" Color="#FBD99B"/>
+            <SolidColorBrush x:Key="WindowModeSurface" Color="#CC71583D"/>
             <SolidColorBrush x:Key="ShellSurface" Color="#29231F"/>
-            <SolidColorBrush x:Key="AcrylicSurface" Color="#4129231F"/>
-            <SolidColorBrush x:Key="ComposerSurface" Color="#53442F22"/>
-            <SolidColorBrush x:Key="TitleSurface" Color="#74352820"/>
+            <SolidColorBrush x:Key="AcrylicSurface" Color="#90312214"/>
+            <SolidColorBrush x:Key="SettingsAcrylicSurface" Color="#A51F1A12"/>
+            <SolidColorBrush x:Key="ComposerSurface" Color="#A650432D"/>
+            <SolidColorBrush x:Key="TitleSurface" Color="#6B41392C"/>
             <SolidColorBrush x:Key="InputSurface" Color="#AB41352A"/>
             <SolidColorBrush x:Key="ControlSurface" Color="#A34C3D30"/>
             <SolidColorBrush x:Key="HoverSurface" Color="#4C3B2F"/>
             <FontFamily x:Key="InterfaceFont">Microsoft YaHei UI, Segoe UI</FontFamily>
             <SolidColorBrush x:Key="PopupSurface" Color="#3A3028"/>
             <LinearGradientBrush x:Key="GlassRim" StartPoint="0,0" EndPoint="1,0.68">
-                <GradientStop Color="#E8FFE4BD" Offset="0"/>
-                <GradientStop Color="#997C6E5F" Offset="0.25"/>
-                <GradientStop Color="#76796958" Offset="0.7"/>
+                <GradientStop Color="#E8FFE1BD" Offset="0"/>
+                <GradientStop Color="#A1968170" Offset="0.20"/>
+                <GradientStop Color="#808C7966" Offset="0.68"/>
                 <GradientStop Color="#A5A78C73" Offset="1"/>
             </LinearGradientBrush>
             <LinearGradientBrush x:Key="CopperRim" StartPoint="0,0" EndPoint="0.4,1">
@@ -35,9 +44,9 @@
             </LinearGradientBrush>
             <RadialGradientBrush x:Key="CopperGlass" Center="0.24,0" GradientOrigin="0.18,0"
                                  RadiusX="0.95" RadiusY="1.25">
-                <GradientStop Color="#CA9A6D49" Offset="0"/>
-                <GradientStop Color="#A7805C3B" Offset="0.43"/>
-                <GradientStop Color="#82624A35" Offset="1"/>
+                <GradientStop Color="#DDAD7A50" Offset="0"/>
+                <GradientStop Color="#CC946745" Offset="0.40"/>
+                <GradientStop Color="#BF75563C" Offset="1"/>
             </RadialGradientBrush>
             <LinearGradientBrush x:Key="PrimarySurface" StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="#664B36" Offset="0"/>
@@ -56,7 +65,7 @@
             </Style>
             <Style x:Key="PreferenceSwitch" TargetType="CheckBox">
                 <Setter Property="Foreground" Value="{StaticResource Paper}"/>
-                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="FontSize" Value="13"/>
                 <Setter Property="FontWeight" Value="Medium"/>
                 <Setter Property="MinHeight" Value="28"/>
                 <Setter Property="Cursor" Value="Hand"/>

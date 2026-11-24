@@ -68,4 +68,4 @@ CampChat 是一款 Windows 游戏文字聊天工具。建房和设置留在管�
 
 ## 已选视觉方向
 
-暖灰风格以带背景散焦的玻璃材质为准。首页和设置的默认尺寸为 408 × 260 DIP，标题栏为 35 DIP，首页标题为 19 DIP，设置标题为 17 DIP，行标签为 14 DIP，键帽和选择框文字为 13 DIP。文字采用暖白色，聊天用户名沿用琥珀色。分组描边沿圆角连续延伸，在组标题下留空。「铺满屏幕」使用居中的浅铜字与较深的铜棕背景。[Apple 材质设计指南](https://developer.apple.com/design/human-interface-guidelines/materials)
+暖灰风格以带背景散焦的玻璃材质为准。首页和设置的默认尺寸为 408 × 260 DIP，标题栏为 35 DIP，首页标题为 17 DIP，设置标题为 15.5 DIP，行标签为 12 DIP，键帽为 12.5 DIP，选择框为 11.5 DIP。标题、本体、图标分别按参考图取暖色，聊天用户名沿用琥珀色。分组描边沿圆角连续延伸，在组标题下留空。首页双按钮、设置选择框和「铺满屏幕」分别采用 12.5、6 和 6.5 DIP 的圆角。「铺满屏幕」使用居中的浅铜字与铜棕背景。[Apple 材质设计指南](https://developer.apple.com/design/human-interface-guidelines/materials)

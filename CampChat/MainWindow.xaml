@@ -12,6 +12,7 @@
     </shell:WindowChrome.WindowChrome>
     <Window.Resources>
         <BorderGapMaskConverter x:Key="GroupLegendGap"/>
+        <CornerRadius x:Key="ActionRadius">8</CornerRadius>
         <Style x:Key="ScrollTrackButton" TargetType="RepeatButton">
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Template">
@@ -94,7 +95,7 @@
             </Setter>
         </Style>
         <Style x:Key="SettingsLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
@@ -118,8 +119,8 @@
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{StaticResource ControlSurface}" BorderBrush="{StaticResource Line}" BorderThickness="1"
-                                CornerRadius="6" Height="24" Padding="7,0">
+                        <Border Background="{StaticResource KeycapSurface}" BorderBrush="{StaticResource SettingsFieldLine}" BorderThickness="1"
+                                CornerRadius="6" Height="23" Padding="7,0">
                             <Border.Style>
                                 <Style TargetType="Border">
                                     <Setter Property="MinWidth" Value="43"/>
@@ -133,7 +134,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <TextBlock Text="{Binding}" FontSize="13" Foreground="{StaticResource Paper}"
+                            <TextBlock Text="{Binding}" FontSize="12.5" Foreground="{StaticResource Paper}"
                                        VerticalAlignment="Center" TextAlignment="Center"/>
                         </Border>
                     </DataTemplate>
@@ -177,7 +178,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Frame" Background="{TemplateBinding Background}" CornerRadius="10"
+                        <Border x:Name="Frame" Background="{TemplateBinding Background}" CornerRadius="{DynamicResource ActionRadius}"
                                 BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1" RenderTransformOrigin=".5,.5">
                             <Border.RenderTransform><ScaleTransform x:Name="PressScale"/></Border.RenderTransform>
                             <VisualStateManager.VisualStateGroups>
@@ -202,7 +203,7 @@
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
                             <Grid>
-                                <Border x:Name="Tint" Background="#25F9D8B6" Opacity="0" CornerRadius="9" IsHitTestVisible="False"/>
+                                <Border x:Name="Tint" Background="#25F9D8B6" Opacity="0" CornerRadius="{Binding CornerRadius, ElementName=Frame}" IsHitTestVisible="False"/>
                                 <ContentPresenter x:Name="ButtonContent" Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   VerticalAlignment="Center" RecognizesAccessKey="True"/>
                             </Grid>
@@ -224,9 +225,11 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
         <Style x:Key="HomeAction" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Resources><CornerRadius x:Key="ActionRadius">12.5</CornerRadius></Style.Resources>
             <Setter Property="Height" Value="66"/>
+            <Setter Property="Foreground" Value="{StaticResource HomeActionInk}"/>
             <Setter Property="Width" Value="174"/>
-            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="FontSize" Value="17"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="Padding" Value="9,5"/>
             <Setter Property="BorderBrush" Value="{StaticResource GlassRim}"/>
@@ -234,6 +237,9 @@
         <Style x:Key="HomePrimary" TargetType="Button" BasedOn="{StaticResource HomeAction}">
             <Setter Property="Background" Value="{StaticResource CopperGlass}"/>
             <Setter Property="BorderBrush" Value="{StaticResource CopperRim}"/>
+        </Style>
+        <Style x:Key="WindowModeAction" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Resources><CornerRadius x:Key="ActionRadius">6.5</CornerRadius></Style.Resources>
         </Style>
         <Style x:Key="ShortcutButton" TargetType="Button" BasedOn="{StaticResource IconButton}">
             <Setter Property="Width" Value="Auto"/>
@@ -247,6 +253,7 @@
         <Style TargetType="ComboBox">
             <Setter Property="Foreground" Value="{StaticResource Paper}"/>
             <Setter Property="Background" Value="{StaticResource InputSurface}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
             <Setter Property="Height" Value="41"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="ItemContainerStyle">
@@ -275,12 +282,12 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <ToggleButton Focusable="False" ClickMode="Press"
+                            <ToggleButton Focusable="False" ClickMode="Press" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
                                           IsChecked="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}">
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="ToggleButton">
-                                        <Border Background="{StaticResource InputSurface}" BorderBrush="{StaticResource Line}"
-                                                CornerRadius="7" BorderThickness="1">
+                                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                CornerRadius="6" BorderThickness="1">
                                             <Path Data="{StaticResource ChevronDownIcon}" Style="{StaticResource ActionIcon}"
                                                   Width="10" Height="10" HorizontalAlignment="Right" Margin="0,0,11,0"/>
                                         </Border>
@@ -290,7 +297,7 @@
                             <ContentPresenter Margin="11,0,26,0" VerticalAlignment="Center" IsHitTestVisible="False"
                                               Content="{TemplateBinding SelectionBoxItem}"
                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"/>
-                            <Border x:Name="ComboFocus" IsHitTestVisible="False" CornerRadius="7"
+                            <Border x:Name="ComboFocus" IsHitTestVisible="False" CornerRadius="6"
                                     BorderThickness="1" BorderBrush="{StaticResource Amber}" Visibility="Collapsed"/>
                             <Popup x:Name="PART_Popup" Placement="Bottom" AllowsTransparency="True"
                                    IsOpen="{TemplateBinding IsDropDownOpen}" Focusable="False" PopupAnimation="Fade">
@@ -313,7 +320,7 @@
             </Setter>
         </Style>
     </Window.Resources>
-    <Border BorderBrush="{StaticResource GlassRim}" BorderThickness="1" CornerRadius="12">
+    <Border BorderBrush="{StaticResource GlassRim}" BorderThickness="1" CornerRadius="11.5">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
@@ -345,7 +352,7 @@
                     </Button>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center" IsHitTestVisible="False">
                         <TextBlock x:Name="HeaderTitle" Text="营地聊天" VerticalAlignment="Center"
-                                   FontSize="19" FontWeight="Medium"/>
+                                   FontSize="17" FontWeight="Medium" Foreground="{StaticResource BrandInk}"/>
                     </StackPanel>
                 </DockPanel>
             </Border>
@@ -362,7 +369,7 @@
                                 AutomationProperties.Name="创建房间">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Path Data="{StaticResource CreateRoomIcon}" Style="{StaticResource ActionIcon}" Width="38" Height="38"
-                                      Stroke="{StaticResource Paper}" Margin="0,0,12,0"/>
+                                      Stroke="{StaticResource HomeIconInk}" Margin="0,0,12,0"/>
                                 <TextBlock Text="创建房间" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -370,7 +377,7 @@
                                 AutomationProperties.Name="加入房间">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Path Data="{StaticResource JoinRoomIcon}" Style="{StaticResource ActionIcon}" Width="38" Height="38"
-                                      Stroke="{StaticResource Paper}" Margin="0,0,12,0"/>
+                                      Stroke="{StaticResource HomeIconInk}" Margin="0,0,12,0"/>
                                 <TextBlock Text="加入房间" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
@@ -457,7 +464,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Path Data="{StaticResource KeyboardIcon}" Style="{StaticResource ActionIcon}"
                                               Stroke="{StaticResource SoftAccent}" Margin="0,0,6,0"/>
-                                        <TextBlock Text="快捷键" FontSize="16" FontWeight="Medium" VerticalAlignment="Center"/>
+                                        <TextBlock Text="快捷键" FontSize="14.75" FontWeight="Medium" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </GroupBox.Header>
                                 <Grid>
@@ -484,7 +491,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Path Data="{StaticResource ScreenIcon}" Style="{StaticResource ActionIcon}"
                                               Stroke="{StaticResource SoftAccent}" Margin="0,0,6,0"/>
-                                        <TextBlock Text="游戏显示" FontSize="16" FontWeight="Medium" VerticalAlignment="Center"/>
+                                        <TextBlock Text="游戏显示" FontSize="14.75" FontWeight="Medium" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </GroupBox.Header>
                                 <Grid>
@@ -499,21 +506,24 @@
                                         <RowDefinition Height="28"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="字幕布局" Style="{StaticResource SettingsLabel}"/>
-                                    <ComboBox x:Name="LayoutPicker" Grid.Column="1" FontSize="13" FontWeight="Medium" Height="25"
+                                    <ComboBox x:Name="LayoutPicker" Grid.Column="1" FontSize="11.5" FontWeight="Medium" Height="24"
+                                              Background="{StaticResource SettingsFieldSurface}" BorderBrush="{StaticResource SettingsFieldLine}"
                                               SelectionChanged="PreferencesChanged" AutomationProperties.Name="游戏内字幕布局">
                                         <ComboBoxItem Content="底部左侧" ToolTip="显示最近三条消息"/>
                                         <ComboBoxItem Content="屏幕右侧" ToolTip="显示最新一条消息"/>
                                     </ComboBox>
                                     <TextBlock Grid.Row="1" Text="游戏窗口" Style="{StaticResource SettingsLabel}"/>
                                     <Grid Grid.Row="1" Grid.Column="1">
-                                        <ComboBox x:Name="GameWindowPicker" FontSize="13" FontWeight="Medium" Height="25" DropDownOpened="GameWindowsOpened"
+                                        <ComboBox x:Name="GameWindowPicker" FontSize="11.5" FontWeight="Medium" Height="24"
+                                                  Background="{StaticResource SettingsFieldSurface}" BorderBrush="{StaticResource SettingsFieldLine}"
+                                                  DropDownOpened="GameWindowsOpened"
                                                   SelectionChanged="GameWindowChanged" AutomationProperties.Name="选择游戏窗口"
                                                   ToolTip="打开列表会刷新当前窗口。">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate><TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Title}"/></DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <TextBlock Text="选择窗口" FontSize="13" Foreground="{StaticResource Muted}" Margin="11,0,26,0"
+                                        <TextBlock Text="选择窗口" FontSize="11.5" Foreground="{StaticResource Muted}" Margin="11,0,26,0"
                                                    VerticalAlignment="Center" IsHitTestVisible="False" TextTrimming="CharacterEllipsis">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
@@ -528,8 +538,8 @@
                                         </TextBlock>
                                     </Grid>
                                     <Button x:Name="BorderlessButton" Grid.Row="1" Grid.Column="2" Content="铺满屏幕"
-                                            Height="25" MinHeight="25" Click="BorderlessClicked" IsEnabled="False"
-                                            Padding="3,0" FontSize="13" FontWeight="Medium" Margin="15,0,0,0"
+                                            Height="24" MinHeight="24" Style="{StaticResource WindowModeAction}" Click="BorderlessClicked" IsEnabled="False"
+                                            Padding="3,0" FontSize="11.5" FontWeight="Medium" Margin="15,0,0,0"
                                             HorizontalContentAlignment="Center" Foreground="{StaticResource CopperInk}"
                                             BorderBrush="{StaticResource CopperRim}" Background="{StaticResource WindowModeSurface}"
                                             ToolTip="先把游戏切到窗口模式，再铺满屏幕。" ToolTipService.ShowOnDisabled="True"/>

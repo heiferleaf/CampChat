@@ -8,10 +8,10 @@ internal sealed class OverlayText : FrameworkElement
 {
     private static readonly Typeface Face = new(OverlayStyle.InterfaceFont,
         FontStyles.Normal, FontWeights.Medium, FontStretches.Normal);
-    private static readonly Brush TextBrush = FrozenBrush(0xff, 0xff, 0xf3, 0xe4);
+    private static readonly Brush TextBrush = FrozenBrush(0xff, 0xfa, 0xf4, 0xeb);
     private static readonly Brush SpeakerBrush = FrozenBrush(0xff, 0xec, 0xb7, 0x80);
     private static readonly Pen Outline = MakeOutline();
-    private const double TextSize = 18;
+    private const double TextSize = 16.5;
     private const double Inset = 3;
     private FormattedText? _formatted;
     private Geometry? _outlineGeometry;
@@ -110,7 +110,7 @@ internal sealed class OverlayText : FrameworkElement
 
     private static Pen MakeOutline()
     {
-        var pen = new Pen(FrozenBrush(0xee, 0x0d, 0x0f, 0x12), 2.6)
+        var pen = new Pen(FrozenBrush(0xdc, 0x12, 0x10, 0x0e), 1.8)
         {
             LineJoin = PenLineJoin.Round,
         };
