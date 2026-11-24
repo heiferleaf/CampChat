@@ -87,27 +87,53 @@
                             <Border x:Name="Legend" Margin="17,0,0,2" Padding="5,0" HorizontalAlignment="Left" Height="22">
                                 <ContentPresenter ContentSource="Header" VerticalAlignment="Center"/>
                             </Border>
-                            <ContentPresenter Grid.Row="1" Margin="21,0,16,5" ContentSource="Content"/>
+                            <ContentPresenter Grid.Row="1" Margin="31,0,6,5" ContentSource="Content"/>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="SettingsLabel" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="Medium"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
         </Style>
         <DataTemplate x:Key="ShortcutKeycaps">
-            <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl ItemsSource="{Binding}" AlternationCount="8">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate><WrapPanel Orientation="Horizontal"/></ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Margin" Value="24,0,0,0"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=ItemsControl}}" Value="4">
+                                <Setter Property="Margin" Value="9,0,0,0"/>
+                            </DataTrigger>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="0">
+                                <Setter Property="Margin" Value="0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Background="{StaticResource ControlSurface}" BorderBrush="{StaticResource Line}" BorderThickness="1"
-                                CornerRadius="6" MinWidth="42" Height="24" Padding="7,0" Margin="0,0,13,0">
-                            <TextBlock Text="{Binding}" FontSize="14" FontWeight="Medium" Foreground="{StaticResource Paper}"
+                                CornerRadius="6" Height="24" Padding="7,0">
+                            <Border.Style>
+                                <Style TargetType="Border">
+                                    <Setter Property="MinWidth" Value="43"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="Ctrl">
+                                            <Setter Property="MinWidth" Value="52"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="Shift">
+                                            <Setter Property="MinWidth" Value="56"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                            <TextBlock Text="{Binding}" FontSize="13" Foreground="{StaticResource Paper}"
                                        VerticalAlignment="Center" TextAlignment="Center"/>
                         </Border>
                     </DataTemplate>
@@ -290,7 +316,7 @@
     <Border BorderBrush="{StaticResource GlassRim}" BorderThickness="1" CornerRadius="12">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource Line}" Background="{StaticResource TitleSurface}"
@@ -324,14 +350,14 @@
                 </DockPanel>
             </Border>
 
-            <Grid Grid.Row="1" Margin="17,7,17,7">
+            <Grid Grid.Row="1" Margin="15,4,15,7">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <Grid x:Name="Stage" ClipToBounds="True">
                     <ScrollViewer x:Name="WelcomePanel" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,17,0,4">
+                    <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,25,0,4">
                         <Button x:Name="CreateEntry" Click="OpenCreateClicked" Style="{StaticResource HomePrimary}" Margin="0,0,16,4"
                                 AutomationProperties.Name="创建房间">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -426,7 +452,7 @@
                     <ScrollViewer x:Name="PreferencesPanel" Visibility="Collapsed" VerticalScrollBarVisibility="Auto"
                                   HorizontalScrollBarVisibility="Disabled">
                         <StackPanel>
-                            <GroupBox x:Name="HotkeyGroup" Style="{StaticResource SettingsGroup}" AutomationProperties.Name="快捷键" Margin="0,0,0,6">
+                            <GroupBox x:Name="HotkeyGroup" Style="{StaticResource SettingsGroup}" AutomationProperties.Name="快捷键" Margin="0,0,0,8">
                                 <GroupBox.Header>
                                     <StackPanel Orientation="Horizontal">
                                         <Path Data="{StaticResource KeyboardIcon}" Style="{StaticResource ActionIcon}"
@@ -465,7 +491,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="93"/>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="93"/>
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="28"/>
@@ -473,21 +499,21 @@
                                         <RowDefinition Height="28"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Text="字幕布局" Style="{StaticResource SettingsLabel}"/>
-                                    <ComboBox x:Name="LayoutPicker" Grid.Column="1" FontSize="14" FontWeight="Medium" Height="25"
+                                    <ComboBox x:Name="LayoutPicker" Grid.Column="1" FontSize="13" FontWeight="Medium" Height="25"
                                               SelectionChanged="PreferencesChanged" AutomationProperties.Name="游戏内字幕布局">
                                         <ComboBoxItem Content="底部左侧" ToolTip="显示最近三条消息"/>
                                         <ComboBoxItem Content="屏幕右侧" ToolTip="显示最新一条消息"/>
                                     </ComboBox>
                                     <TextBlock Grid.Row="1" Text="游戏窗口" Style="{StaticResource SettingsLabel}"/>
                                     <Grid Grid.Row="1" Grid.Column="1">
-                                        <ComboBox x:Name="GameWindowPicker" FontSize="14" FontWeight="Medium" Height="25" DropDownOpened="GameWindowsOpened"
+                                        <ComboBox x:Name="GameWindowPicker" FontSize="13" FontWeight="Medium" Height="25" DropDownOpened="GameWindowsOpened"
                                                   SelectionChanged="GameWindowChanged" AutomationProperties.Name="选择游戏窗口"
                                                   ToolTip="打开列表会刷新当前窗口。">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate><TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis" ToolTip="{Binding Title}"/></DataTemplate>
                                             </ComboBox.ItemTemplate>
                                         </ComboBox>
-                                        <TextBlock Text="选择窗口" FontSize="14" Foreground="{StaticResource Muted}" Margin="11,0,26,0"
+                                        <TextBlock Text="选择窗口" FontSize="13" Foreground="{StaticResource Muted}" Margin="11,0,26,0"
                                                    VerticalAlignment="Center" IsHitTestVisible="False" TextTrimming="CharacterEllipsis">
                                             <TextBlock.Style>
                                                 <Style TargetType="TextBlock">
@@ -503,7 +529,7 @@
                                     </Grid>
                                     <Button x:Name="BorderlessButton" Grid.Row="1" Grid.Column="2" Content="铺满屏幕"
                                             Height="25" MinHeight="25" Click="BorderlessClicked" IsEnabled="False"
-                                            Padding="3,0" FontSize="14" FontWeight="Medium" Margin="8,0,0,0"
+                                            Padding="3,0" FontSize="13" FontWeight="Medium" Margin="15,0,0,0"
                                             HorizontalContentAlignment="Center" Foreground="{StaticResource CopperInk}"
                                             BorderBrush="{StaticResource CopperRim}" Background="{StaticResource WindowModeSurface}"
                                             ToolTip="先把游戏切到窗口模式，再铺满屏幕。" ToolTipService.ShowOnDisabled="True"/>

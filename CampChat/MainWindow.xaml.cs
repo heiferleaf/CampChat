@@ -349,6 +349,7 @@ public partial class MainWindow : Window
         BackButton.Visibility = VisibleIf(page is Page.Join or Page.Create or Page.Preferences);
         HeaderPreferences.Visibility = VisibleIf(page != Page.Preferences);
         HeaderHide.Visibility = VisibleIf(page != Page.Preferences);
+        HeaderTitle.FontSize = page == Page.Preferences ? 17 : 19;
         HeaderTitle.Text = page switch
         {
             Page.Create => "创建房间",
