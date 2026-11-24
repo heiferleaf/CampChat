@@ -35,3 +35,14 @@ dotnet run --project .\CampChat.Check\CampChat.Check.csproj -c Release
 ```
 
 桌面交互检查和独立浮层小样见[贡献指南](CONTRIBUTING.md)。页面及浮层的状态见[界面与交互规格](docs/interaction.md)。本项目使用 [MIT 许可证](LICENSE)。
+
+## 打赏
+
+如果 CampChat 帮你在团灭前打出了那句「快跑」，欢迎请我喝杯奶茶。点个 Star 也很开心。
+
+<details>
+<summary>展开微信打赏码</summary>
+
+<a href="docs/wechat-tip.png"><img src="docs/wechat-tip.png" width="240" alt="微信打赏收款码，点击查看原图" /></a>
+
+</details>
