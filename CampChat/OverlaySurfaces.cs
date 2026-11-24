@@ -222,10 +222,11 @@ internal sealed class ComposerWindow : Window
 {
     public const double CompactHeight = 36;
     private const double CompactWidth = 318;
+    private const double InputTextSize = 14.5;
     private readonly TextBox _draft = new()
     {
-        Background = Brushes.Transparent, BorderThickness = new Thickness(0), Padding = new Thickness(0),
-        VerticalContentAlignment = VerticalAlignment.Center, MaxLength = 400, FontSize = 17,
+        Background = Brushes.Transparent, BorderThickness = new Thickness(0), Padding = new Thickness(0, 3, 0, 3),
+        VerticalContentAlignment = VerticalAlignment.Center, MaxLength = 400, FontSize = InputTextSize,
         Foreground = OverlayStyle.FindBrush("Paper"), CaretBrush = OverlayStyle.FindBrush("Amber"),
         FocusVisualStyle = null,
     };
@@ -275,7 +276,7 @@ internal sealed class ComposerWindow : Window
         var placeholder = new TextBlock
         {
             Text = "发给小队…", Foreground = OverlayStyle.FindBrush("Muted"),
-            IsHitTestVisible = false, VerticalAlignment = VerticalAlignment.Center, FontSize = 16,
+            IsHitTestVisible = false, VerticalAlignment = VerticalAlignment.Center, FontSize = InputTextSize,
         };
         messageArea.Children.Add(placeholder);
         messageArea.Children.Add(_draft);

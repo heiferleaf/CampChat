@@ -445,7 +445,7 @@
                                     AutomationProperties.Name="发送" Style="{StaticResource IconButton}" Margin="5,0,0,0">
                                 <Path Data="{StaticResource SendIcon}" Style="{StaticResource ActionIcon}" Stroke="{StaticResource Amber}"/>
                             </Button>
-                            <TextBox x:Name="Composer" MaxLength="400" AutomationProperties.Name="输入消息"/>
+                            <TextBox x:Name="Composer" MaxLength="400" Padding="12,6" AutomationProperties.Name="输入消息"/>
                         </DockPanel>
                     </Grid>
 
