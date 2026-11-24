@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>CampChat</AssemblyName>
+        <Version>0.1.0</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <ApplicationManifest>app.manifest</ApplicationManifest>
+        <ApplicationIcon>Assets\CampChat.ico</ApplicationIcon>
+    </PropertyGroup>
+    <ItemGroup>
+        <Resource Include="Assets\CampChat.ico" />
+    </ItemGroup>
+</Project>

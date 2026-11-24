@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net10.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="../CampChat/GlobalShortcuts.cs;../CampChat/PassiveOverlay.cs;../CampChat/OverlayText.cs;../CampChat/OverlaySurfaces.cs;../CampChat/OverlayDock.cs" />
+        <Page Include="../CampChat/OverlayIcons.xaml" Link="OverlayIcons.xaml" />
+        <Page Include="../CampChat/OverlayTheme.xaml" Link="OverlayTheme.xaml" />
+        <Resource Include="../overlay-design/game-preview.png" Link="GamePreview.png" />
+    </ItemGroup>
+</Project>

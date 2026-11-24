@@ -1,0 +1,36 @@
+<Window x:Class="CampChat.Preview.PreviewWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="营地聊天 · 游戏内交互预览" Width="1060" Height="668" MinWidth="650" MinHeight="475"
+        Background="{StaticResource ShellSurface}" Foreground="{StaticResource Paper}" Language="zh-CN" FontFamily="Noto Sans SC, DengXian, Segoe UI"
+        FontSize="14" WindowStartupLocation="CenterScreen" PreviewKeyDown="OnPreviewKeyDown"
+        SourceInitialized="OnSourceInitialized" Loaded="OnLoaded" Closed="OnClosed"
+        LocationChanged="OnWindowMoved" SizeChanged="OnWindowResized" StateChanged="OnStateChanged">
+    <Grid Margin="20,15,20,15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DockPanel Margin="0,0,0,12" LastChildFill="True">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button Content="模拟来信" Click="PlayMessages" Margin="0,0,8,0" />
+                <Button Content="打字" Click="OpenComposerClicked" Margin="0,0,8,0" />
+                <Button Content="房间设置" Click="OpenSettingsClicked" />
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="营地聊天" FontSize="21" FontWeight="SemiBold" />
+                <TextBlock Text="游戏内交互预览" Foreground="{StaticResource Muted}" FontSize="12"/>
+            </StackPanel>
+        </DockPanel>
+        <Border x:Name="Scene" Grid.Row="1" CornerRadius="10" Background="{StaticResource InputSurface}"
+                ClipToBounds="True" Focusable="True" MouseLeftButtonDown="GameClick">
+            <Image Source="GamePreview.png" Stretch="UniformToFill" IsHitTestVisible="False"/>
+        </Border>
+        <DockPanel Grid.Row="2" Margin="0,10,0,0" LastChildFill="True">
+            <TextBlock x:Name="GameStatus" DockPanel.Dock="Right" VerticalAlignment="Center"
+                       Foreground="{StaticResource SoftAccent}" Text="游戏收到 0 次点击" />
+            <TextBlock x:Name="Hint" Foreground="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,0,12,0"/>
+        </DockPanel>
+    </Grid>
+</Window>

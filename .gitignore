@@ -1,0 +1,17 @@
+bin/
+obj/
+.vs/
+publish/
+__pycache__/
+*.user
+*.suo
+*.log
+*.dmp
+*.zip
+*.pfx
+*.key
+.env
+.env.*
+CampChat.settings.json
+CampChat.settings.json.tmp
+TestResults/
