@@ -12,7 +12,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shell;
 using System.Windows.Threading;
 using CampChat.Network;
 
@@ -24,8 +23,8 @@ public partial class MainWindow : Window
     private const string WritingHint = "按 Enter 发送，按 Esc 收起。";
     private const int PageExitMilliseconds = 245;
     private const int PageEnterMilliseconds = 385;
-    private const int WelcomeHeight = 145;
-    private const int WelcomeStatusHeight = 170;
+    private const int WelcomeHeight = 260;
+    private const int WelcomeStatusHeight = 284;
     private readonly ObservableCollection<ChatLine> _history = [];
     private readonly CancellationTokenSource _shutdown = new();
     private readonly BorderlessGameWindow _borderless = new();
@@ -85,6 +84,13 @@ public partial class MainWindow : Window
     {
         if (_ready)
             return;
+        if (_source?.CompositionTarget is { } target && Background is SolidColorBrush surface)
+        {
+            if (DesktopWindow.TryApplyAcrylic(this, _source))
+                Background = (Brush)FindResource("AcrylicSurface");
+            else
+                target.BackgroundColor = surface.Color;
+        }
         LayoutPicker.SelectedIndex = (int)_preferences.Layout;
         MotionEnabled.IsChecked = _preferences.Animate;
         InitializeTray();
@@ -115,18 +121,6 @@ public partial class MainWindow : Window
     {
         _source = (HwndSource)PresentationSource.FromVisual(this);
         _source.AddHook(WindowMessage);
-        if (_source.CompositionTarget is { } target && Background is SolidColorBrush surface)
-        {
-            if (WindowChrome.GetWindowChrome(this) is { } chrome && DesktopWindow.TryApplyAcrylic(_source.Handle))
-            {
-                chrome.GlassFrameThickness = new Thickness(-1);
-                target.BackgroundColor = Colors.Transparent;
-                Background = (Brush)FindResource("AcrylicSurface");
-            }
-            else
-                target.BackgroundColor = surface.Color;
-        }
-        DesktopWindow.RoundCorner(_source.Handle);
         _hotkeys = new GlobalShortcuts(_source.Handle);
         if (!_hotkeys.TryApply(_preferences.Shortcuts))
             foreach (var preset in GlobalShortcuts.Presets)
@@ -354,7 +348,7 @@ public partial class MainWindow : Window
         _page = page;
         BackButton.Visibility = VisibleIf(page is Page.Join or Page.Create or Page.Preferences);
         HeaderPreferences.Visibility = VisibleIf(page != Page.Preferences);
-        Mark.Visibility = VisibleIf(page is Page.Welcome or Page.Room);
+        HeaderHide.Visibility = VisibleIf(page != Page.Preferences);
         HeaderTitle.Text = page switch
         {
             Page.Create => "创建房间",
@@ -366,10 +360,10 @@ public partial class MainWindow : Window
         Title = page == Page.Welcome ? "营地聊天" : $"营地聊天（{HeaderTitle.Text}）";
         _pageHeight = _preferences.WindowSize?.Height ?? page switch
         {
-            Page.Create => 318,
-            Page.Join => 289,
-            Page.Room => 420,
-            Page.Preferences => 470,
+            Page.Create => 341,
+            Page.Join => 315,
+            Page.Room => 448,
+            Page.Preferences => 260,
             _ => status.Length == 0 ? WelcomeHeight : WelcomeStatusHeight,
         };
         if (animate)
@@ -536,9 +530,9 @@ public partial class MainWindow : Window
     }
     private void CloseClicked(object sender, RoutedEventArgs e) => Close();
     private async void RefreshClicked(object sender, RoutedEventArgs e) => await RefreshAdaptersAsync();
-    private void RefreshWindowsClicked(object sender, RoutedEventArgs e) => RefreshGameWindows();
+    private void GameWindowsOpened(object? sender, EventArgs e) => RefreshGameWindows(suggestForeground: false);
 
-    private void RefreshGameWindows()
+    private void RefreshGameWindows(bool suggestForeground = true)
     {
         var previous = GameWindowPicker.SelectedItem as WindowTarget;
         var windows = DesktopWindow.VisibleWindows();
@@ -546,7 +540,7 @@ public partial class MainWindow : Window
         GameWindowPicker.ItemsSource = windows;
         GameWindowPicker.SelectedItem = applied != IntPtr.Zero
             ? windows.FirstOrDefault(window => window.Handle == applied)
-            : windows.FirstOrDefault(window => window.Handle == _returnWindow)
+            : windows.FirstOrDefault(window => suggestForeground && window.Handle == _returnWindow)
                 ?? windows.FirstOrDefault(window => previous != null && window.Handle == previous.Handle
                     && window.Thread == previous.Thread && window.Process == previous.Process);
         UpdateWindowAction();
@@ -564,7 +558,8 @@ public partial class MainWindow : Window
         GameWindowPicker.IsEnabled = !applied;
         BorderlessButton.IsEnabled = applied || GameWindowPicker.SelectedItem is WindowTarget { IsAvailable: true };
         BorderlessButton.Content = applied ? "还原窗口" : "铺满屏幕";
-        BorderlessButton.ToolTip = applied ? "恢复所选窗口原来的位置、大小和边框。" : "将所选窗口切为无边框全屏。";
+        BorderlessButton.ToolTip = applied ? "恢复所选窗口原来的位置、大小和边框。"
+            : "先把游戏切到窗口模式，再将所选窗口铺满屏幕。";
     }
 
     private async void BorderlessClicked(object sender, RoutedEventArgs e)

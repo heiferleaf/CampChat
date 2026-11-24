@@ -2,6 +2,8 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Shell;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -218,11 +220,12 @@ internal sealed class CaptionWindow : Window
 
 internal sealed class ComposerWindow : Window
 {
-    public const double CompactHeight = 45;
+    public const double CompactHeight = 36;
+    private const double CompactWidth = 318;
     private readonly TextBox _draft = new()
     {
         Background = Brushes.Transparent, BorderThickness = new Thickness(0), Padding = new Thickness(0),
-        VerticalContentAlignment = VerticalAlignment.Center, MaxLength = 400, FontSize = 15,
+        VerticalContentAlignment = VerticalAlignment.Center, MaxLength = 400, FontSize = 17,
         Foreground = OverlayStyle.FindBrush("Paper"), CaretBrush = OverlayStyle.FindBrush("Amber"),
         FocusVisualStyle = null,
     };
@@ -246,23 +249,33 @@ internal sealed class ComposerWindow : Window
     public ComposerWindow()
     {
         Title = "营地聊天 · 打字";
-        Width = 400;
+        Width = CompactWidth;
         Height = CompactHeight;
         WindowStyle = WindowStyle.None;
         ResizeMode = ResizeMode.NoResize;
-        AllowsTransparency = true;
+        AllowsTransparency = !DesktopWindow.AcrylicAvailable();
         Background = Brushes.Transparent;
+        if (!AllowsTransparency)
+            WindowChrome.SetWindowChrome(this, new WindowChrome
+            {
+                CaptionHeight = 0, ResizeBorderThickness = new Thickness(0), GlassFrameThickness = new Thickness(0),
+            });
         ShowInTaskbar = false;
         Topmost = true;
-        FontFamily = OverlayStyle.InterfaceFont;
+        FontFamily = (FontFamily)Application.Current.FindResource("InterfaceFont");
+        TextOptions.SetTextFormattingMode(this, TextFormattingMode.Display);
+        TextOptions.SetTextRenderingMode(this, TextRenderingMode.Grayscale);
 
         _send = OverlayStyle.IconButton("SendIcon", "发送（Enter）");
+        _send.Height = 33;
+        _send.Width = 42;
+        _send.Padding = new Thickness(4);
         _send.Click += (_, _) => Send();
         var messageArea = new Grid { Margin = new Thickness(10, 0, 8, 0) };
         var placeholder = new TextBlock
         {
             Text = "发给小队…", Foreground = OverlayStyle.FindBrush("Muted"),
-            IsHitTestVisible = false, VerticalAlignment = VerticalAlignment.Center, FontSize = 14,
+            IsHitTestVisible = false, VerticalAlignment = VerticalAlignment.Center, FontSize = 16,
         };
         messageArea.Children.Add(placeholder);
         messageArea.Children.Add(_draft);
@@ -270,12 +283,13 @@ internal sealed class ComposerWindow : Window
             placeholder.Visibility = _draft.Text.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
         AutomationProperties.SetName(_draft, "输入小队消息");
         var layout = new DockPanel { LastChildFill = true };
-        _mark.Margin = new Thickness(12, 0, 0, 0);
+        _mark.Margin = new Thickness(7, 0, 0, 0);
+        _mark.StrokeThickness = 2.3;
         _mark.VerticalAlignment = VerticalAlignment.Center;
         DockPanel.SetDock(_send, Dock.Right);
         var grip = new Border
         {
-            Width = 32, Background = Brushes.Transparent, Child = _mark, Cursor = Cursors.SizeAll,
+            Width = 30, Background = Brushes.Transparent, Child = _mark, Cursor = Cursors.SizeAll,
             ToolTip = "拖动输入条。靠近屏幕左右边缘时吸附。",
         };
         AutomationProperties.SetName(grip, "拖动输入条");
@@ -284,19 +298,38 @@ internal sealed class ComposerWindow : Window
         layout.Children.Add(grip);
         layout.Children.Add(_send);
         layout.Children.Add(messageArea);
-        layout.Height = 43;
+        layout.Height = CompactHeight - 2;
         var content = new StackPanel();
         content.Children.Add(_error);
         content.Children.Add(layout);
         _frame = new Border
         {
-            CornerRadius = new CornerRadius(9), BorderThickness = new Thickness(1),
-            Background = OverlayStyle.Solid(0xba, 0x34, 0x2b, 0x23), Child = content,
+            CornerRadius = new CornerRadius(12), BorderThickness = new Thickness(1),
+            BorderBrush = OverlayStyle.FindBrush("GlassRim"),
+            Background = OverlayStyle.FindBrush("ShellSurface"), Child = content,
         };
         Content = _frame;
+        Loaded += (_, _) => ApplySurface();
     }
 
-    public static double WidthFor(Rect area) => Math.Max(190, Math.Min(400, area.Width * 0.48));
+    protected override void OnActivated(EventArgs e)
+    {
+        base.OnActivated(e);
+        if (IsLoaded)
+            ApplySurface();
+    }
+
+    private void ApplySurface()
+    {
+        if (AllowsTransparency || PresentationSource.FromVisual(this) is not HwndSource source)
+            return;
+
+        var acrylic = DesktopWindow.TryApplyAcrylic(this, source);
+        Background = acrylic ? Brushes.Transparent : OverlayStyle.FindBrush("ShellSurface");
+        _frame.Background = acrylic ? OverlayStyle.FindBrush("ComposerSurface") : Background;
+    }
+
+    public static double WidthFor(Rect area) => Math.Max(190, Math.Min(CompactWidth, area.Width * 0.48));
 
     public void MoveTo(Rect area, CaptionLayout layout, OverlayDock? dock = null)
     {
@@ -307,7 +340,6 @@ internal sealed class ComposerWindow : Window
         Left = anchor.X;
         Top = anchor.Y;
         var accent = OverlayStyle.FindBrush(layout == CaptionLayout.Team ? "Amber" : "SoftAccent");
-        _frame.BorderBrush = accent;
         _mark.Stroke = accent;
         _draft.CaretBrush = accent;
         ((Path)_send.Content).Stroke = accent;
@@ -343,7 +375,7 @@ internal sealed class ComposerWindow : Window
             Keyboard.Focus(_draft);
             _draft.CaretIndex = _draft.Text.Length;
         }));
-        OverlayStyle.Appear(_frame, Animate, 5);
+        OverlayStyle.Appear(_frame.Child, Animate, 2);
     }
 
     public void ResetDraft()
@@ -394,7 +426,7 @@ internal sealed class ComposerWindow : Window
 
     private void SetError(string? text)
     {
-        var targetHeight = text == null ? CompactHeight : 64;
+        var targetHeight = text == null ? CompactHeight : CompactHeight + 19;
         Top += Height - targetHeight;
         Height = targetHeight;
         _error.Text = text ?? "";

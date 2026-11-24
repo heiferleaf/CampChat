@@ -2,24 +2,50 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="OverlayIcons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <SolidColorBrush x:Key="Paper" Color="#F2E4D3"/>
-            <SolidColorBrush x:Key="Muted" Color="#CFBEAC"/>
-            <SolidColorBrush x:Key="Line" Color="#69584B"/>
+            <SolidColorBrush x:Key="Paper" Color="#FFF3E4"/>
+            <SolidColorBrush x:Key="Muted" Color="#DECEBD"/>
+            <SolidColorBrush x:Key="Line" Color="#836F5F"/>
             <SolidColorBrush x:Key="Amber" Color="#ECB780"/>
             <SolidColorBrush x:Key="SoftAccent" Color="#DDC0A1"/>
+            <SolidColorBrush x:Key="GlassIcon" Color="#F3DDC3"/>
+            <SolidColorBrush x:Key="GroupLine" Color="#A48C7664"/>
+            <SolidColorBrush x:Key="GroupSurface" Color="#3C2C2119"/>
+            <SolidColorBrush x:Key="CopperInk" Color="#FFD39D"/>
+            <SolidColorBrush x:Key="WindowModeSurface" Color="#D0583D29"/>
             <SolidColorBrush x:Key="ShellSurface" Color="#29231F"/>
-            <SolidColorBrush x:Key="AcrylicSurface" Color="#A029231F"/>
-            <SolidColorBrush x:Key="TitleSurface" Color="#D8352D26"/>
-            <SolidColorBrush x:Key="InputSurface" Color="#2F2721"/>
-            <SolidColorBrush x:Key="ControlSurface" Color="#393027"/>
+            <SolidColorBrush x:Key="AcrylicSurface" Color="#4129231F"/>
+            <SolidColorBrush x:Key="ComposerSurface" Color="#53442F22"/>
+            <SolidColorBrush x:Key="TitleSurface" Color="#74352820"/>
+            <SolidColorBrush x:Key="InputSurface" Color="#AB41352A"/>
+            <SolidColorBrush x:Key="ControlSurface" Color="#A34C3D30"/>
             <SolidColorBrush x:Key="HoverSurface" Color="#4C3B2F"/>
+            <FontFamily x:Key="InterfaceFont">Microsoft YaHei UI, Segoe UI</FontFamily>
+            <SolidColorBrush x:Key="PopupSurface" Color="#3A3028"/>
+            <LinearGradientBrush x:Key="GlassRim" StartPoint="0,0" EndPoint="1,0.68">
+                <GradientStop Color="#E8FFE4BD" Offset="0"/>
+                <GradientStop Color="#997C6E5F" Offset="0.25"/>
+                <GradientStop Color="#76796958" Offset="0.7"/>
+                <GradientStop Color="#A5A78C73" Offset="1"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="CopperRim" StartPoint="0,0" EndPoint="0.4,1">
+                <GradientStop Color="#FFFFE2BC" Offset="0"/>
+                <GradientStop Color="#E8DFAD82" Offset="0.22"/>
+                <GradientStop Color="#FFC59062" Offset="0.7"/>
+                <GradientStop Color="#EDF7BF89" Offset="1"/>
+            </LinearGradientBrush>
+            <RadialGradientBrush x:Key="CopperGlass" Center="0.24,0" GradientOrigin="0.18,0"
+                                 RadiusX="0.95" RadiusY="1.25">
+                <GradientStop Color="#CA9A6D49" Offset="0"/>
+                <GradientStop Color="#A7805C3B" Offset="0.43"/>
+                <GradientStop Color="#82624A35" Offset="1"/>
+            </RadialGradientBrush>
             <LinearGradientBrush x:Key="PrimarySurface" StartPoint="0,0" EndPoint="0,1">
                 <GradientStop Color="#664B36" Offset="0"/>
                 <GradientStop Color="#49372A" Offset="1"/>
             </LinearGradientBrush>
             <Style x:Key="ActionIcon" TargetType="Path">
-                <Setter Property="Width" Value="16"/>
-                <Setter Property="Height" Value="16"/>
+                <Setter Property="Width" Value="18"/>
+                <Setter Property="Height" Value="18"/>
                 <Setter Property="Stretch" Value="Uniform"/>
                 <Setter Property="Stroke" Value="{StaticResource Muted}"/>
                 <Setter Property="StrokeThickness" Value="1.6"/>
@@ -30,8 +56,9 @@
             </Style>
             <Style x:Key="PreferenceSwitch" TargetType="CheckBox">
                 <Setter Property="Foreground" Value="{StaticResource Paper}"/>
-                <Setter Property="FontSize" Value="14"/>
-                <Setter Property="MinHeight" Value="38"/>
+                <Setter Property="FontSize" Value="15"/>
+                <Setter Property="FontWeight" Value="Medium"/>
+                <Setter Property="MinHeight" Value="28"/>
                 <Setter Property="Cursor" Value="Hand"/>
                 <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                 <Setter Property="Template">
@@ -40,23 +67,18 @@
                             <Border x:Name="Row" Background="Transparent" BorderBrush="Transparent"
                                     BorderThickness="1" CornerRadius="7" Padding="0,0,6,0">
                                 <DockPanel>
-                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock x:Name="State" Width="30" Margin="0,0,8,0" Text="关闭" FontSize="12"
-                                                   TextAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource Muted}"/>
-                                        <Border x:Name="Track" Width="38" Height="22" Padding="3" CornerRadius="11"
-                                                Background="{StaticResource InputSurface}" BorderThickness="1" BorderBrush="#8F7B6A">
-                                            <Ellipse x:Name="Thumb" Width="14" Height="14" HorizontalAlignment="Left"
-                                                     Fill="{StaticResource Muted}"/>
-                                        </Border>
-                                    </StackPanel>
+                                    <Border x:Name="Track" DockPanel.Dock="Right" Width="39" Height="20" Padding="2"
+                                            CornerRadius="10" VerticalAlignment="Center" Background="{StaticResource InputSurface}"
+                                            BorderThickness="1" BorderBrush="#8F7B6A">
+                                        <Ellipse x:Name="Thumb" Width="14" Height="14" HorizontalAlignment="Left"
+                                                 Fill="{StaticResource Muted}"/>
+                                    </Border>
                                     <ContentPresenter VerticalAlignment="Center" RecognizesAccessKey="True"/>
                                 </DockPanel>
                             </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsChecked" Value="True">
-                                    <Setter TargetName="State" Property="Text" Value="开启"/>
-                                    <Setter TargetName="State" Property="Foreground" Value="{StaticResource Amber}"/>
-                                    <Setter TargetName="Track" Property="Background" Value="#B87B49"/>
+                                    <Setter TargetName="Track" Property="Background" Value="#D49A63"/>
                                     <Setter TargetName="Track" Property="BorderBrush" Value="{StaticResource Amber}"/>
                                     <Setter TargetName="Thumb" Property="Fill" Value="{StaticResource Paper}"/>
                                     <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
@@ -79,8 +101,8 @@
                 </Setter>
             </Style>
             <Style x:Key="IconButton" TargetType="Button">
-                <Setter Property="Width" Value="35"/>
-                <Setter Property="Height" Value="35"/>
+                <Setter Property="Width" Value="38"/>
+                <Setter Property="Height" Value="38"/>
                 <Setter Property="Padding" Value="8"/>
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Foreground" Value="{StaticResource Muted}"/>
@@ -115,9 +137,10 @@
                 </Style.Triggers>
             </Style>
             <Style x:Key="CaptionButton" TargetType="Button" BasedOn="{StaticResource IconButton}">
-                <Setter Property="Width" Value="32"/>
-                <Setter Property="Height" Value="32"/>
-                <Setter Property="Margin" Value="1,0"/>
+                <Setter Property="Width" Value="38"/>
+                <Setter Property="Height" Value="34"/>
+                <Setter Property="Margin" Value="3,0"/>
+                <Setter Property="Foreground" Value="{StaticResource GlassIcon}"/>
                 <Setter Property="Padding" Value="5"/>
             </Style>
             <Style x:Key="CaptionClose" TargetType="Button" BasedOn="{StaticResource CaptionButton}">

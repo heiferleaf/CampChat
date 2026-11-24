@@ -1,6 +1,9 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Shell;
 using Microsoft.Win32;
 
 namespace CampChat;
@@ -47,24 +50,43 @@ internal static class DesktopWindow
     public static bool TryFocus(IntPtr handle) =>
         IsExternal(handle) && IsWindow(handle) && !IsIconic(handle) && SetForegroundWindow(handle);
 
-    public static void RoundCorner(IntPtr handle)
-    {
-        var preference = 2;
-        DwmSetWindowAttribute(handle, 33, ref preference, sizeof(int));
-    }
-
-    public static bool TryApplyAcrylic(IntPtr handle)
+    public static bool AcrylicAvailable()
     {
         if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22621) || SystemParameters.HighContrast)
             return false;
         const string personalization = @"HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-        if (Registry.GetValue(personalization, "EnableTransparency", 1) is 0)
+        return Registry.GetValue(personalization, "EnableTransparency", 1) is not 0;
+    }
+
+    public static bool TryApplyAcrylic(Window window, HwndSource source)
+    {
+        if (!OperatingSystem.IsWindowsVersionAtLeast(10, 0, 22000))
             return false;
 
+        const int cornerAttribute = 33;
+        var roundCorner = 2;
+        DwmSetWindowAttribute(source.Handle, cornerAttribute, ref roundCorner, sizeof(int));
+
+        if (!AcrylicAvailable() || WindowChrome.GetWindowChrome(window) is not { } chrome
+            || source.CompositionTarget is not { } target)
+            return false;
+
+        const int darkAttribute = 20;
         var dark = 1;
-        DwmSetWindowAttribute(handle, 20, ref dark, sizeof(int));
+        DwmSetWindowAttribute(source.Handle, darkAttribute, ref dark, sizeof(int));
+
+        var fallback = target.BackgroundColor;
+        chrome.GlassFrameThickness = WindowChrome.GlassFrameCompleteThickness;
+        target.BackgroundColor = Colors.Transparent;
+
+        const int backdropAttribute = 38;
         var desktopAcrylic = 3;
-        return DwmSetWindowAttribute(handle, 38, ref desktopAcrylic, sizeof(int)) == 0;
+        if (DwmSetWindowAttribute(source.Handle, backdropAttribute, ref desktopAcrylic, sizeof(int)) == 0)
+            return true;
+
+        chrome.GlassFrameThickness = new Thickness(0);
+        target.BackgroundColor = fallback;
+        return false;
     }
 
     public static Rect Viewport(IntPtr target)

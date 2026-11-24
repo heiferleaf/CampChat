@@ -229,8 +229,8 @@ internal static class Program
         foreach (var name in new[] { "HeaderPreferences", "HeaderHide", "HeaderClose" })
         {
             var control = (Button)window.FindName(name);
-            Require(control.Content is System.Windows.Shapes.Path icon && icon.Data != null && icon.Width == 18,
-                $"{name} uses an 18-DIP vector pictogram.");
+            Require(control.Content is System.Windows.Shapes.Path icon && icon.Data != null && icon.Width is >= 15 and <= 18,
+                $"{name} uses a compact vector pictogram.");
         }
         await Open("Create");
         await Open("Join");
@@ -306,11 +306,24 @@ internal static class Program
         switchControl.IsChecked = true;
         switchControl.ApplyTemplate();
         var track = (Border)switchControl.Template.FindName("Track", switchControl);
-        var state = (TextBlock)switchControl.Template.FindName("State", switchControl);
+        var thumb = (FrameworkElement)switchControl.Template.FindName("Thumb", switchControl);
         var toggle = (IToggleProvider)new CheckBoxAutomationPeer(switchControl).GetPattern(PatternInterface.Toggle)!;
-        Require(track.ActualWidth < 40 && state.Text == "开启", "Settings show the on state as a compact custom switch.");
+        Require(track.ActualWidth < 40 && thumb.HorizontalAlignment == HorizontalAlignment.Right,
+            "The compact switch moves its thumb right when on.");
+        Require(((ScrollViewer)panels["Preferences"]).ScrollableHeight == 0,
+            "Settings fit without scrolling at the default window size.");
+        var fillScreen = (Button)window.FindName("BorderlessButton");
+        var buttonText = (ContentPresenter)fillScreen.Template.FindName("ButtonContent", fillScreen);
+        var labelCenter = buttonText.TranslatePoint(new Point(buttonText.ActualWidth / 2, 0), fillScreen);
+        Require(Math.Abs(labelCenter.X - fillScreen.ActualWidth / 2) <= 0.5,
+            "The fill-screen label is centered within the button.");
+        var groups = new[] { (GroupBox)window.FindName("HotkeyGroup"), (GroupBox)window.FindName("DisplayGroup") };
+        Require(groups.All(group =>
+            group.Template.FindName("Outline", group) is Border { CornerRadius.TopLeft: 9, OpacityMask: not null }),
+            "Both settings groups use continuous rounded outlines with a measured legend gap.");
         toggle.Toggle();
-        Require(state.Text == "关闭" && switchControl.IsChecked == false, "Accessible toggle updates the off state immediately.");
+        Require(thumb.HorizontalAlignment == HorizontalAlignment.Left && switchControl.IsChecked == false,
+            "Accessible toggle updates the off state immediately.");
         if (!string.IsNullOrEmpty(captureFolder))
             SaveFrame(TakeFrame(window), Path.Combine(captureFolder, "PreferencesOff.png"));
         ChangePage("Welcome");
@@ -330,7 +343,7 @@ internal static class Program
                 await Task.Delay(28);
             }
             await UntilAsync(() => IsSettled("Join"));
-            Require(window.Height == 289 && panels["Join"].IsHitTestVisible, "Rapid route changes settle on the last page and its height.");
+            Require(window.Height == 315 && panels["Join"].IsHitTestVisible, "Rapid route changes settle on the last page and its height.");
             Console.WriteLine("PASS: 32 interrupted transitions, live first frames, and a single resize per page change.");
         }
         await Open("Preferences");
